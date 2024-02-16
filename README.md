@@ -4,12 +4,12 @@ Repository containing .sty files I use for my homework and notes.
 ## Table of Contents
 [homework.sty](https://github.com/ktm-p/LaTeX-Setup/edit/main/README.md#homeworksty)
 
-  - [\\mytitle](https://github.com/ktm-p/LaTeX-Setup/edit/main/README.md#mytitle)
+  - [mytitle](#mytitle)
   - [hw](#hw)
 
 ## homework.sty
 This section will detail some of the custom features, environments, and commands in `homework.sty`.
-### \\mytitle
+### mytitle
 The `homework.sty` file has its own custom command `\mytitle` that creates a title page, along with the list of problems page. The command takes in two arguments `arg1` and `arg2`, where `arg1` is the title of the document, and `arg2` the date.
 
 `\mytitle{arg1}{arg2}` is defined as follows:
