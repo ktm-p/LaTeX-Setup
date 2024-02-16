@@ -2,7 +2,7 @@
 Repository containing .sty files I use for my homework and notes.
 
 ## Table of Contents
-[homework.sty](https://github.com/ktm-p/LaTeX-Setup/edit/main/README.md#homeworksty)
+[homework.sty](#homeworksty)
 
   - [mytitle](#mytitle)
   - [hw](#hw)
