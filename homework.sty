@@ -218,12 +218,13 @@
 \newenvironment{innerproof}{\renewcommand{\qedsymbol}{$\square$}\proof}{\endproof}
 
 
-%%% CUSTOM COMMANDS %%%
+%%% MATH MACROS %%%
 % BASIC FUNCTIONS %
 \newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
 \newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
 \newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
+\newcommand{\abs}[1]{\left| #1 \right|}
 
 % LOGIC %
 \newcommand*\xor{\oplus}
@@ -237,6 +238,30 @@
 \newcommand{\QQ}{\mathbb{Q}}
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\ZZ}{\mathbb{Z}}
+
+% FUNCTIONS %
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\inj}{\hookrightarrow}
+
+% BRACKETING %
+\newcommand{\pr}[1]{\left( {#1} \right)}
+\newcommand{\br}[1]{\left[ {#1} \right]}
+\newcommand{\brc}[1]{ \left\{  {#1} \right\}}
+\newcommand{\ang}[1]{\langle {#1} \rangle}
+
+% FRACTIONS %
+\newcommand{\pfrac}[2]{\pr{\frac{#1}{#2}}}
+\newcommand{\bfrac}[2]{\br{\frac{#1}{#2}}}
+
+% DERIVATIVES %
+\NewDocumentCommand{\deriv}{o m}{
+	\IfNoValueTF{#1}{\frac{d}{d #2}}
+	{\frac{d #1}{d #2}}
+}
+\NewDocumentCommand{\pd}{o m}{
+	\IfNoValueTF{#1}{\frac{\partial}{\partial #2}}
+	{\frac{\partial #1}{\partial #2}}
+}
 
 % PROBABILITY (CS70) %
 \newcommand{\E}{\mathbb{E}}
@@ -262,12 +287,16 @@
 \DeclareMathOperator*{\ran}{\mathrm{ran}}
 \DeclareMathOperator*{\fld}{\mathrm{fld}}
 \newcommand{\image}[1]{\left\llbracket {#1} \right\rrbracket}
+\newcommand{\lang}[1]{\mathcal{L}\pr{#1}}
 
-% BRACKETING %
-\newcommand{\pr}[1]{\left( {#1} \right)}
-\newcommand{\br}[1]{\left[ {#1} \right]}
-\newcommand{\brc}[1]{ \left\{  {#1} \right\}}
-\newcommand{\ang}[1]{\langle {#1} \rangle}
+
+%%% COMPUTER SCIENCE MACROS %%%
+% BIG-O NOTATION %
+\newcommand{\BigO}[1]{\mathcal{O}\!\pr{#1}}
+\newcommand{\BigOm}[1]{\Omega\!\pr{#1}}
+\newcommand{\BigTh}[1]{\Theta\!\pr{#1}}
+\newcommand{\SmO}[1]{\scalebox{0.7}{$\mathcal{O}$}\!\pr{#1}}
+\newcommand{\SmOm}[1]{\omega\!\pr{#1}}
 
 
 %%% MISCELLANEOUS %%%
