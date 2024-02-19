@@ -254,10 +254,13 @@
 \newcommand{\bfrac}[2]{\br{\frac{#1}{#2}}}
 
 % DERIVATIVES %
-\NewDocumentCommand{\deriv}{o m}{
-	\IfNoValueTF{#1}{\frac{d}{d #2}}
-	{\frac{d #1}{d #2}}
+\NewDocumentCommand{\dd}{o m o}{
+	\IfNoValueTF{#3}{\IfNoValueTF{#1}{\frac{d}{d #2}}
+		{\frac{d #1}{d #2}}}
+	{\IfNoValueTF{#1}{\frac{d^{#3}}{d #2^{#3}}}
+		{\frac{d^{#3} #1}{d #2^{#3}}}}
 }
+
 \NewDocumentCommand{\pd}{o m}{
 	\IfNoValueTF{#1}{\frac{\partial}{\partial #2}}
 	{\frac{\partial #1}{\partial #2}}
