@@ -2,7 +2,7 @@
 %%% .sty file created by ktm-p %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%		  homework.sty           %
+%		    notes.sty            %
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
 %%% PACKAGES %%%
 \usepackage{amsmath}
@@ -41,18 +41,44 @@
 \definecolor{lightyellow}{HTML}{FFFFAE}
 \definecolor{hyperlinkblue}{HTML}{3366CC}
 
+
 %%% PAGE SETUP %%%
 % BASIC LAYOUT %
-\setlength\parindent{0pt} % Paragraph indentation
-\setlength{\parskip}{5pt} % Spacing between paragraphs
-\usepackage[margin=1in]{geometry} % Margin size
+\setlength\parindent{0pt} % paragraph indentation
+\setlength{\parskip}{5pt} % spacing between paragraphs
+\usepackage[margin=1in]{geometry} % margin size
 
 % HEADER/FOOTER %
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[R]{\thepage} % Page number on bottom right
-\fancyhead[R]{\textit{\leftmark}} % Section title
-\renewcommand{\headrulewidth}{0pt} % Removing horizontal line at the top
+\renewcommand{\headrulewidth}{0pt} % removing horizontal line at the top
+\setlength{\headheight}{15pt}
+\renewcommand{\chaptermark}[1]{\markright{#1}{}}
+\renewcommand{\sectionmark}[1]{}
+\fancypagestyle{contentpage}{%
+	\lhead{}
+	\rhead{\textit{\rightmark}}
+	\cfoot{\thepage}
+}
+\pagestyle{contentpage}
+
+% TABLE OF CONTENT %
+\makeatletter
+\newcommand\mytoc{%
+	\if@twocolumn
+	\@restonecoltrue\onecolumn
+	\else
+	\@restonecolfalse
+	\fi
+	\toctrue
+	\chapter*{\contentsname
+		\@mkboth{%
+			\contentsname}{\contentsname}}\addcontentsline{toc}{chapter}{Contents}%
+	\tocfalse
+	\@starttoc{toc}%
+	\if@restonecol\twocolumn\fi
+}
+\makeatother
 
 % HYPERLINK FORMATTING %
 \hypersetup{
@@ -63,32 +89,29 @@
 	pdfauthor={...},
 }
 
-% LIST OF PROBLEM PAGE %
-% Solution by mrclrchtr:
-% Link: https://tex.stackexchange.com/questions/475799/how-can-i-change-the-format-of-an-entry-in-listoftheorems-of-thmtools
-\renewcommand\thmtformatoptarg[1]{:\enspace#1}
-
-\makeatletter
-\def\ll@hw{
-	\thmt@thmname~
-	\protect\numberline{\csname the\thmt@envname\endcsname}%
-	\ifx\@empty
-	\thmt@shortoptarg
+% CHAPTER FORMATTING %
+\newif\iftoc\titleformat{\chapter}[display]{\cabin}{}{2in}{
+	\raggedleft
+	\iftoc
+	\vspace{2in}
 	\else
-	\protect\thmtformatoptarg{\thmt@shortoptarg}
+	{\LARGE\textsc{Chapter}~{\cantarell\thechapter}} \\
 	\fi
-}
-\makeatother
-
-\makeatletter
-\renewcommand*{\numberline}[1]{\hb@xt@3em{#1}}
-\makeatother
+	\Huge\scshape\bfseries
+}[\vspace{-20pt}\rule{\textwidth}{0.1pt}\vspace{0.0in}]
+\titlespacing{\chapter}{0pt}{
+	\iftoc
+	-100pt+1in
+	\else
+	-130pt+1in
+	\fi
+}{0pt}
 
 
 %%% ENVIRONMENTS STYLES (thmtools boxes) %%%
 % PURPLE BOX %
 \declaretheoremstyle[
-	mdframed={
+mdframed={
 	backgroundcolor=lightpurple,
 	linecolor=darkpurple,
 	rightline=false,
@@ -101,13 +124,13 @@
 	leftmargin=-2pt,
 	skipbelow=2pt,
 	nobreak
-	},
-	headfont=\normalfont\bfseries\color{darkpurple}
+},
+headfont=\normalfont\bfseries\color{darkpurple}
 ]{purplebox}
 
 % GREEN BOX %
 \declaretheoremstyle[
-	mdframed={
+mdframed={
 	backgroundcolor=lightgreen,
 	linecolor=darkgreen,
 	rightline=false,
@@ -120,13 +143,13 @@
 	leftmargin=-2pt,
 	skipbelow=2pt,
 	nobreak
-	},
-	headfont=\normalfont\bfseries\color{darkgreen}
+},
+headfont=\normalfont\bfseries\color{darkgreen}
 ]{greenbox}
 
 % YELLOW BOX %
 \declaretheoremstyle[
-	mdframed={
+mdframed={
 	backgroundcolor=lightyellow,
 	linecolor=darkyellow,
 	rightline=false,
@@ -139,13 +162,13 @@
 	leftmargin=-2pt,
 	skipbelow=2pt,
 	nobreak
-	},
-	headfont=\normalfont\bfseries\color{darkyellow}
+},
+headfont=\normalfont\bfseries\color{darkyellow}
 ]{yellowbox}
 
 % BLUE BOX %
 \declaretheoremstyle[
-	mdframed={
+mdframed={
 	backgroundcolor=lightblue,
 	linecolor=darkblue,
 	rightline=false,
@@ -158,13 +181,13 @@
 	leftmargin=-2pt,
 	skipbelow=2pt,
 	nobreak
-	},
-	headfont=\normalfont\bfseries\color{darkblue}
+},
+headfont=\normalfont\bfseries\color{darkblue}
 ]{bluebox}
 
 % RED BOX %
 \declaretheoremstyle[
-	mdframed={
+mdframed={
 	backgroundcolor=lightred,
 	linecolor=darkred,
 	rightline=false,
@@ -177,14 +200,16 @@
 	leftmargin=-2pt,
 	skipbelow=2pt,
 	nobreak
-	},
-	headfont=\normalfont\bfseries\color{darkred}
+},
+headfont=\normalfont\bfseries\color{darkred}
 ]{redbox}
 
 
 %%% ENVIRONMENTS %%%
+
+
 % PURPLE BOXES (Theorems, Propositions, Lemmas, and Corollaries) %
-\declaretheorem[style=purplebox,name=Theorem,within=section]{thm}
+\declaretheorem[style=purplebox,name=Theorem,within=chapter]{thm}
 \declaretheorem[style=purplebox,name=Theorem,sibling=thm]{theorem}
 \declaretheorem[style=purplebox,name=Theorem,numbered=no]{thm*, theorem*}
 \declaretheorem[style=purplebox,name=Proposition,sibling=thm]{prop, proposition}
@@ -198,22 +223,20 @@
 \declaretheorem[style=greenbox,name=Definition,sibling=thm]{definition, defn}
 \declaretheorem[style=greenbox,name=Definition,numbered=no]{definition*, defn*}
 
-% BLUE BOXES (Homework) %
-\declaretheorem[style=bluebox,name=Problem,numberwithin=section]{homework}
+% BLUE BOXES (Problems) %
+\declaretheorem[style=bluebox,name=Problem,numberwithin=chapter]{homework, hw}
 \declaretheorem[style=bluebox,name=Problem,numbered=no]{homework*, hw*}
-\NewDocumentEnvironment{hw}{m o}{\IfNoValueTF{#2}{
-	\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
-	{\renewcommand*{\thehomework}{\thesubsection\alph{homework}}\setcounter{subsection}{#1}\setcounter{homework}{\inteval{#2-1}}\begin{homework}}}
-{\end{homework}}
 
 % RED BOXES (Remarks) %
 \declaretheorem[style=redbox,name=Remark,sibling=thm]{remark, rmk}
 \declaretheorem[style=redbox,name=Remark, numbered=no]{remark*, rmk*}
-\declaretheorem[style=yellowbox,name=Warning,sibling=thm]{warn}
-\declaretheorem[style=yellowbox,name=Warning,numbered=no]{warn*}
-%
 
-% SOLUTION %
+% YELLOW BOXES (Examples) %
+\declaretheorem[style=yellowbox,name=Example,sibling=thm]{example, ex}
+\declaretheorem[style=yellowbox,name=Example,numbered=no]{example*, ex*}
+%%%%%
+
+% SOLUTION ENVIRONMENT %
 \newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
 \renewcommand\qedsymbol{$\blacksquare$}
 
@@ -221,18 +244,13 @@
 \newenvironment{innerproof}{\renewcommand{\qedsymbol}{$\square$}\proof}{\endproof}
 
 
-%%% MISCELLANEOUS %%%
-\renewcommand*{\thehomework}{\thesubsection}
-\renewcommand{\listtheoremname}{Problems}
-
-
-%%% TITLE PAGE %%%
+% TITLE PAGE %
 \newcommand{\mytitle}[2]{%
 	\title{#1}
 	\author{...}
 	\date{#2}
 	\maketitle
 	\newpage
-	\listoftheorems
+	\mytoc
 	\newpage
 }
