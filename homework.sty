@@ -1,9 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% .sty file created by ktm-p %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-%		  homework.sty           %
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
 %%% PACKAGES %%%
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -65,24 +62,27 @@
 
 % LIST OF PROBLEM PAGE %
 % Solution by mrclrchtr:
-% Link: https://tex.stackexchange.com/questions/475799/how-can-i-change-the-format-of-an-entry-in-listoftheorems-of-thmtools
-\renewcommand\thmtformatoptarg[1]{:\enspace#1}
+% Link: https://tex.stackexchange.com/questions/475799/how-can-i-change-the-format-of-an-entry-in-theorems-of-thmtools
+\begin{comment} % copy and paste this into your preamble!!!
+	\renewcommand\thmtformatoptarg[1]{:\enspace#1}
+	
+	\makeatletter
+	\def\ll@homework{
+		\thmt@thmname~
+		\protect\numberline{\csname the\thmt@envname\endcsname}%
+		\ifx\@empty
+		\thmt@shortoptarg
+		\else
+		\protect\thmtformatoptarg{\thmt@shortoptarg}
+		\fi
+	}
+	\makeatother
+	
+	\makeatletter
+	\renewcommand*{\numberline}[1]{\hb@xt@3em{#1}}
+	\makeatother	
+\end{comment}
 
-\makeatletter
-\def\ll@hw{
-	\thmt@thmname~
-	\protect\numberline{\csname the\thmt@envname\endcsname}%
-	\ifx\@empty
-	\thmt@shortoptarg
-	\else
-	\protect\thmtformatoptarg{\thmt@shortoptarg}
-	\fi
-}
-\makeatother
-
-\makeatletter
-\renewcommand*{\numberline}[1]{\hb@xt@3em{#1}}
-\makeatother
 
 
 %%% ENVIRONMENTS STYLES (thmtools boxes) %%%
@@ -205,7 +205,35 @@
 	\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
 	{\renewcommand*{\thehomework}{\thesubsection\alph{homework}}\setcounter{subsection}{#1}\setcounter{homework}{\inteval{#2-1}}\begin{homework}}}
 {\end{homework}}
-
+	
+\newcounter{dscounter}
+\begin{comment}
+\NewDocumentEnvironment{dshw}{m o o}{\IfNoValueTF{#2}{
+		\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
+		{\renewcommand*{\thehomework}{\thesubsection\alph{dscounter}\roman{homework}}\setcounter{subsection}{#1}\setcounter{dscounter}{\inteval{#2}}\setcounter{homework}{#3 - 1}\begin{homework}}}
+		{\end{homework}}
+\end{comment}
+\NewDocumentEnvironment{dshw}{m o o}{
+	\IfNoValueT{#2}{\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
+	\IfNoValueF{#2}{\IfNoValueTF{#3}
+		{\renewcommand*{\thehomework}{\thesubsection\alph{homework}}\setcounter{subsection}{#1}\setcounter{homework}{\inteval{#2-1}}\begin{homework}}
+		{\renewcommand*{\thehomework}{\thesubsection\alph{dscounter}\roman{homework}}\setcounter{subsection}{#1}\setcounter{dscounter}{#2}\setcounter{homework}{\inteval{#3-1}}\begin{homework}}
+		}
+	}
+	{\end{homework}}
+\begin{comment}
+\NewDocumentEnvironment{dshw}{m o}{\IfNoValueTF{#2}
+	% If no alph
+	{\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
+	% If alph
+	{\IfNoValueTF{#3}
+		% If no roman
+		{\renewcommand*{\thehomework}{\thesubsection\alph{homework}}\setcounter{subsection}{#1}\setcounter{homework}{\inteval{#2-1}}\begin{homework}}
+		% If roman
+		{\renewcommand*{\thehomework}{\thesubsection\alph{dscounter}\roman{homework}}\setcounter{subsection}{#1}\setcounter{dscounter}{\inteval{#2-1}}\setcounter{homework}{\inteval{#3-1}}\begin{homework}}
+	}
+	{\end{homework}}
+\end{comment}
 % RED BOXES (Remarks) %
 \declaretheorem[style=redbox,name=Remark,sibling=thm]{remark, rmk}
 \declaretheorem[style=redbox,name=Remark, numbered=no]{remark*, rmk*}
