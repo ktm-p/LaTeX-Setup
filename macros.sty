@@ -68,9 +68,11 @@
 		{\frac{d^{#3} #1}{d #2^{#3}}}}
 }
 
-\NewDocumentCommand{\pd}{o m}{
-	\IfNoValueTF{#1}{\frac{\partial}{\partial #2}}
-	{\frac{\partial #1}{\partial #2}}
+\NewDocumentCommand{\pd}{o m o}{
+	\IfNoValueTF{#3}{\IfNoValueTF{#1}{\frac{\partial}{\partial #2}}
+		{\frac{\partial #1}{\partial #2}}}
+	{\IfNoValueTF{#1}{\frac{\partial^{#3}}{\partial #2^{#3}}}
+		{\frac{\partial^{#3} #1}{\partial #2^{#3}}}}
 }
 
 % PROBABILITY (CS70) %

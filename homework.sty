@@ -201,19 +201,9 @@
 % BLUE BOXES (Homework) %
 \declaretheorem[style=bluebox,name=Problem,numberwithin=section]{homework}
 \declaretheorem[style=bluebox,name=Problem,numbered=no]{homework*, hw*}
-\NewDocumentEnvironment{hw}{m o}{\IfNoValueTF{#2}{
-	\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
-	{\renewcommand*{\thehomework}{\thesubsection\alph{homework}}\setcounter{subsection}{#1}\setcounter{homework}{\inteval{#2-1}}\begin{homework}}}
-{\end{homework}}
-	
+
 \newcounter{dscounter}
-\begin{comment}
-\NewDocumentEnvironment{dshw}{m o o}{\IfNoValueTF{#2}{
-		\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
-		{\renewcommand*{\thehomework}{\thesubsection\alph{dscounter}\roman{homework}}\setcounter{subsection}{#1}\setcounter{dscounter}{\inteval{#2}}\setcounter{homework}{#3 - 1}\begin{homework}}}
-		{\end{homework}}
-\end{comment}
-\NewDocumentEnvironment{dshw}{m o o}{
+\NewDocumentEnvironment{hw}{m O{0} O{0}}{
 	\IfNoValueT{#2}{\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
 	\IfNoValueF{#2}{\IfNoValueTF{#3}
 		{\renewcommand*{\thehomework}{\thesubsection\alph{homework}}\setcounter{subsection}{#1}\setcounter{homework}{\inteval{#2-1}}\begin{homework}}
@@ -221,19 +211,7 @@
 		}
 	}
 	{\end{homework}}
-\begin{comment}
-\NewDocumentEnvironment{dshw}{m o}{\IfNoValueTF{#2}
-	% If no alph
-	{\renewcommand*{\thehomework}{\thesubsection}\setcounter{subsection}{#1}\begin{homework}}
-	% If alph
-	{\IfNoValueTF{#3}
-		% If no roman
-		{\renewcommand*{\thehomework}{\thesubsection\alph{homework}}\setcounter{subsection}{#1}\setcounter{homework}{\inteval{#2-1}}\begin{homework}}
-		% If roman
-		{\renewcommand*{\thehomework}{\thesubsection\alph{dscounter}\roman{homework}}\setcounter{subsection}{#1}\setcounter{dscounter}{\inteval{#2-1}}\setcounter{homework}{\inteval{#3-1}}\begin{homework}}
-	}
-	{\end{homework}}
-\end{comment}
+
 % RED BOXES (Remarks) %
 \declaretheorem[style=redbox,name=Remark,sibling=thm]{remark, rmk}
 \declaretheorem[style=redbox,name=Remark, numbered=no]{remark*, rmk*}
