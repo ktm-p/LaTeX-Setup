@@ -17,6 +17,7 @@
 \usepackage[scr]{rsfso}
 \usepackage{stmaryrd}
 \usepackage{tasks}
+\usepackage[most, minted]{tcolorbox}
 \usepackage{thmtools}
 \usepackage{tikz}
 \usepackage{titlesec}
@@ -207,8 +208,6 @@ headfont=\normalfont\bfseries\color{darkred}
 
 
 %%% ENVIRONMENTS %%%
-
-
 % PURPLE BOXES (Theorems, Propositions, Lemmas, and Corollaries) %
 \declaretheorem[style=purplebox,name=Theorem,within=chapter]{thm}
 \declaretheorem[style=purplebox,name=Theorem,sibling=thm]{theorem}
@@ -235,9 +234,36 @@ headfont=\normalfont\bfseries\color{darkred}
 % YELLOW BOXES (Examples) %
 \declaretheorem[style=yellowbox,name=Example,sibling=thm]{example, ex}
 \declaretheorem[style=yellowbox,name=Example,numbered=no]{example*, ex*}
-%%%%%
 
-% SOLUTION ENVIRONMENT %
+% CODE %
+\newtcblisting{code}[2][]{%
+	listing engine = minted,
+	minted language = #2,
+	listing only,
+	breakable,
+	enhanced,
+	attach boxed title to top left={
+		xshift = 0.5cm,
+		yshift = -\tcboxedtitleheight/2
+	},
+	top = 4mm,
+	title = \textbf{Code},
+	minted options = {
+		linenos, 
+		breaklines = true, 
+		breakbefore = ., 
+		fontsize =\footnotesize, 
+		numbersep = 2.5mm
+	},
+	overlay={%
+		\begin{tcbclipinterior}
+			\fill[gray!25] (frame.south west) rectangle ([xshift=4mm]frame.north west);
+		\end{tcbclipinterior}
+	},
+	#1   
+}
+
+% SOLUTION %
 \newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
 \renewcommand\qedsymbol{$\blacksquare$}
 
@@ -245,7 +271,7 @@ headfont=\normalfont\bfseries\color{darkred}
 \newenvironment{innerproof}{\renewcommand{\qedsymbol}{$\square$}\proof}{\endproof}
 
 
-% TITLE PAGE %
+%%% TITLE PAGE %%%
 \newcommand{\mytitle}[2]{%
 	\title{#1}
 	\author{...}
