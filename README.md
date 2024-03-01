@@ -5,6 +5,7 @@ Repository containing .sty files I use for my homework and notes.
 [homework.sty](#homeworksty)
 
   - [mytitle](#mytitle)
+  - [listoftheorems](#listoftheorems)
   - [hw](#hw)
 
 ## homework.sty
@@ -25,6 +26,34 @@ The `homework.sty` file has its own custom command `\mytitle` that creates a tit
 }
 ```
 Remember to change the author from `...` to your own name!
+
+### listoftheorems
+The default `\listoftheorems` is redefined to look like the following:
+![Default Problems Page](https://github.com/ktm-p/LaTeX-Setup/assets/119767232/cd20f5c4-028d-44ff-8f9c-d4ee8f751d54)
+
+Due to how `.sty` files interact with `\makeatletter` and `makeatother`, you have to paste the following code into your preamble in order to swap the theorem name and number around in the Problems page:
+```latex
+\renewcommand\thmtformatoptarg[1]{:\enspace#1}
+\makeatletter
+\def\ll@homework{
+	\thmt@thmname~
+	\protect\numberline{\csname the\thmt@envname\endcsname}%
+	\ifx\@empty
+	\thmt@shortoptarg
+	\else
+	\protect\thmtformatoptarg{\thmt@shortoptarg}
+	\fi
+}
+\makeatother
+
+\makeatletter
+\renewcommand*{\numberline}[1]{\hb@xt@3em{#1}}
+\makeatother	
+```
+
+After doing so, the Problems page will look like this:
+![Modified Problems Page](https://github.com/ktm-p/LaTeX-Setup/assets/119767232/e6577631-5fb1-4a79-adee-a9e3064aca4a)
+
 
 ### hw
 The `homework.sty` file also has its own homework environment: `hw`. It uses `thmtools` for its appearance, and is numbered within the section.
