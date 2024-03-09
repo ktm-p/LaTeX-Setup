@@ -5,8 +5,11 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{array}
 \usepackage{cabin} % Headings font
 \usepackage[default]{cantarell} % Default font
+\usepackage{caption}
+\usepackage{csquotes}
 \usepackage[shortlabels]{enumitem}
 \usepackage{epigraph}
 \usepackage{fancyhdr}
@@ -14,8 +17,10 @@
 \usepackage{hyperref}
 \usepackage{mathtools}
 \usepackage[framemethod=TikZ]{mdframed}
+\usepackage{multicol}
 \usepackage[scr]{rsfso}
 \usepackage{stmaryrd}
+\usepackage{tabularx}
 \usepackage{tasks}
 \usepackage[most, minted]{tcolorbox}
 \usepackage{thmtools}
@@ -29,15 +34,20 @@
 
 %%% COLOURS %%%
 \definecolor{darkgreen}{HTML}{19A514}
-\definecolor{lightgreen}{HTML}{9DFF9A}
+\colorlet{lightgreen}{darkgreen!10}
+%\definecolor{lightgreen}{HTML}{9DFF9A}
 \definecolor{darkblue}{HTML}{3E5FE4}
-\definecolor{lightblue}{HTML}{BCDEFF}
+\colorlet{lightblue}{darkblue!10}
+%\definecolor{lightblue}{HTML}{BCDEFF}
 \definecolor{darkred}{HTML}{CC3333}
-\definecolor{lightred}{HTML}{FFA9A9}
+\colorlet{lightred}{darkred!10}
+%\definecolor{lightred}{HTML}{FFA9A9}
 \definecolor{darkpurple}{HTML}{A933CD}
-\definecolor{lightpurple}{HTML}{F0BAFF}
+\colorlet{lightpurple}{darkpurple!10}
+%\definecolor{lightpurple}{HTML}{F0BAFF}
 \definecolor{darkyellow}{HTML}{D2D22A}
-\definecolor{lightyellow}{HTML}{FFFFAE}
+\colorlet{lightyellow}{darkyellow!10}
+%\definecolor{lightyellow}{HTML}{FFFFAE}
 \definecolor{hyperlinkblue}{HTML}{3366CC}
 
 
@@ -62,6 +72,7 @@
 \pagestyle{contentpage}
 
 % TABLE OF CONTENT %
+\setcounter{tocdepth}{3}
 \makeatletter
 \newcommand\mytoc{%
 	\if@twocolumn
@@ -263,6 +274,31 @@ headfont=\normalfont\bfseries\color{darkred}
 	#1   
 }
 
+% WARN %
+\newtcolorbox{warn}[1][]{enhanced,
+	before skip=2mm,after skip=3mm,
+	boxrule=0.4pt,left=5mm,right=2mm,top=1mm,bottom=1mm,
+	colback=lightred,
+	colframe=red!20!black,
+	sharp corners,rounded corners=southeast,arc is angular,arc=3mm,
+	underlay={%
+		\path[fill=tcbcolback!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+		\path[draw=tcbcolframe,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+		\path[fill=red!50!black,draw=none] (interior.south west) rectangle node[white]{\huge\bfseries !} ([xshift=4mm]interior.north west);
+	},
+	drop fuzzy shadow, #1
+}
+
+% LIBRARY MINI-BOX %
+\newtcbox{\mylib}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.4pt,top=0mm,bottom=0mm,
+	right=0mm,left=4mm,arc=1pt,boxsep=2pt,before upper={\vphantom{dlg}},
+	colframe=green!50!black,coltext=green!25!black,colback=green!10!white,
+	overlay={\begin{tcbclipinterior}\fill[green!75!blue!50!white] (frame.south west)
+			rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=90] {LIB} ([xshift=4mm]frame.north west);\end{tcbclipinterior}}}
+
+% MISC %
+\newtcolorbox{miscbox}[1]{enhanced,title=\textbf{#1}, frame style={left color=blue!50!black, right color=green!85!black}, drop fuzzy shadow}
+
 % SOLUTION %
 \newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
 \renewcommand\qedsymbol{$\blacksquare$}
@@ -270,6 +306,8 @@ headfont=\normalfont\bfseries\color{darkred}
 % INNER PROOF %
 \newenvironment{innerproof}{\renewcommand{\qedsymbol}{$\square$}\proof}{\endproof}
 
+% CENTERED TABULARX COLUMN ENTRY %
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 %%% TITLE PAGE %%%
 \newcommand{\mytitle}[2]{%
