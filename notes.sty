@@ -26,6 +26,7 @@
 \usepackage{thmtools}
 \usepackage{tikz}
 \usepackage{titlesec}
+\usepackage{paracol}
 \usepackage{varwidth}
 \usepackage{verbatim}
 \usepackage{xcolor}
@@ -72,7 +73,7 @@
 \pagestyle{contentpage}
 
 % TABLE OF CONTENT %
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{4}
 \makeatletter
 \newcommand\mytoc{%
 	\if@twocolumn
@@ -247,18 +248,14 @@ headfont=\normalfont\bfseries\color{darkred}
 \declaretheorem[style=yellowbox,name=Example,numbered=no]{example*, ex*}
 
 % CODE %
-\newtcblisting{code}[2][]{%
+\newtcblisting{code}[3][]{%
 	listing engine = minted,
 	minted language = #2,
 	listing only,
 	breakable,
 	enhanced,
-	attach boxed title to top left={
-		xshift = 0.5cm,
-		yshift = -\tcboxedtitleheight/2
-	},
-	top = 4mm,
-	title = \textbf{Code},
+	top = 1mm,
+	title = \textbf{Code:} #3,
 	minted options = {
 		linenos, 
 		breaklines = true, 
@@ -266,6 +263,7 @@ headfont=\normalfont\bfseries\color{darkred}
 		fontsize =\footnotesize, 
 		numbersep = 2.5mm
 	},
+	colframe=orange!50,
 	overlay={%
 		\begin{tcbclipinterior}
 			\fill[gray!25] (frame.south west) rectangle ([xshift=4mm]frame.north west);
@@ -274,13 +272,21 @@ headfont=\normalfont\bfseries\color{darkred}
 	#1   
 }
 
+% IN-LINE CODE %
+\newcommand\mystrut{\rule[-1pt]{0pt}{.8em}}
+
+\newtcbox{\inlinecode}{on line, boxrule=0pt, boxsep=0pt, top=2pt,
+	left=2pt, bottom=2pt, right=2pt, colback=gray!25, colframe=white,
+	fontupper={\ttfamily\mystrut}}
+
 % WARN %
-\newtcolorbox{warn}[1][]{enhanced,
-	before skip=2mm,after skip=3mm,
-	boxrule=0.4pt,left=5mm,right=2mm,top=1mm,bottom=1mm,
+\newtcolorbox{warn}[1][]{
+	enhanced,
+	before skip=2mm, after skip=3mm, boxrule=0.4pt, left=5mm, right=2mm, top=1mm, bottom=1mm,
 	colback=lightred,
 	colframe=red!20!black,
-	sharp corners,rounded corners=southeast,arc is angular,arc=3mm,
+	sharp corners, rounded corners=southeast,
+	arc is angular, arc=3mm,
 	underlay={%
 		\path[fill=tcbcolback!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
 		\path[draw=tcbcolframe,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
@@ -289,15 +295,70 @@ headfont=\normalfont\bfseries\color{darkred}
 	drop fuzzy shadow, #1
 }
 
+% FIGURE BOX %
+\newtcolorbox[blend into = figures]{figurebox}[2][]{
+	title = {\normalfont #2},
+	%float = htb,
+	%every float = \centering,
+	fonttitle=\small\bfseries,
+	enhanced,
+	sharp corners, 
+	#1
+}
+
+% CASE STUDY %
+\newtcbtheorem[]{casestudy}{Case Study}{
+	enhanced,
+	breakable,
+	sharp corners=all,
+	fonttitle=\bfseries\normalsize,
+	fontupper=\normalsize,
+	top=0mm,
+	bottom=0mm,
+	right=0mm,
+	colback=white,
+	colframe=white,
+	colbacktitle=white,
+	coltitle=black,
+	attach boxed title to top left,
+	boxed title style={empty, size=minimal, bottom=1mm},
+	overlay unbroken ={
+		\draw (title.south west)--(title.south east);
+		\draw ([xshift=3.5mm]frame.north west)--([xshift=3.5mm]frame.south west);},
+	overlay first={
+		\draw (title.south west)--(title.south east); 
+		\draw ([xshift=3.5mm]frame.north west)--([xshift=3.5mm]frame.south west);},
+	overlay middle={
+		\draw ([xshift=3.5mm]frame.north west)--([xshift=3.5mm]frame.south west);},
+	overlay last={
+		\draw ([xshift=3.5mm]frame.north west)--([xshift=3.5mm]frame.south west);},}
+	{cstudy}
+
 % LIBRARY MINI-BOX %
-\newtcbox{\mylib}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.4pt,top=0mm,bottom=0mm,
-	right=0mm,left=4mm,arc=1pt,boxsep=2pt,before upper={\vphantom{dlg}},
-	colframe=green!50!black,coltext=green!25!black,colback=green!10!white,
-	overlay={\begin{tcbclipinterior}\fill[green!75!blue!50!white] (frame.south west)
-			rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=90] {LIB} ([xshift=4mm]frame.north west);\end{tcbclipinterior}}}
+\newtcbox{\mylib}{
+	enhanced,
+	nobeforeafter,
+	tcbox raise base,
+	boxrule=0.4pt, top=0mm, bottom=0mm, right=0mm, left=4mm, arc=1pt, boxsep=2pt,
+	before upper={\vphantom{dlg}},
+	colframe=blue!50!black,
+	coltext=blue!25!black,
+	colback=blue!10!white,
+	overlay={
+		\begin{tcbclipinterior}\fill[blue!50!white](frame.south west) rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=90] {LIB} ([xshift=4mm]frame.north west);
+		\end{tcbclipinterior}
+	}
+}
 
 % MISC %
-\newtcolorbox{miscbox}[1]{enhanced,title=\textbf{#1}, frame style={left color=blue!50!black, right color=green!85!black}, drop fuzzy shadow}
+\newtcolorbox{miscbox}[1]{
+	enhanced,
+	title=\textbf{#1},
+	frame style={left color=blue!50!black, 
+		right color=green!85!black
+	},
+	drop fuzzy shadow
+}
 
 % SOLUTION %
 \newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
