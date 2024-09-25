@@ -19,6 +19,7 @@
 \usepackage{thmtools}
 \usepackage{tikz}
 \usepackage{titlesec}
+\usepackage[most, minted]{tcolorbox}
 \usepackage{varwidth}
 \usepackage{verbatim}
 \usepackage{xcolor}
@@ -218,6 +219,31 @@
 \declaretheorem[style=yellowbox,name=Warning,sibling=thm]{warn}
 \declaretheorem[style=yellowbox,name=Warning,numbered=no]{warn*}
 %
+
+% CODE %
+\newtcblisting{code}[3][]{%
+	listing engine = minted,
+	minted language = #2,
+	listing only,
+	breakable,
+	enhanced,
+	top = 1mm,
+	title = \textbf{Code:} #3,
+	minted options = {
+		linenos, 
+		breaklines = true, 
+		breakbefore = ., 
+		fontsize =\footnotesize, 
+		numbersep = 2.5mm
+	},
+	colframe=orange!50,
+	overlay={%
+		\begin{tcbclipinterior}
+			\fill[gray!25] (frame.south west) rectangle ([xshift=4mm]frame.north west);
+		\end{tcbclipinterior}
+	},
+	#1   
+}
 
 % SOLUTION %
 \newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}

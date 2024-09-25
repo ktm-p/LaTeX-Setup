@@ -24,6 +24,8 @@
 \usepackage[most, minted]{tcolorbox}
 \usepackage{thmtools}
 \usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{shapes}
 \usepackage{titlesec}
 \usepackage{hyperref}
 \usepackage{paracol}
@@ -137,7 +139,6 @@ mdframed={
 	innerleftmargin=8pt,
 	leftmargin=-2pt,
 	skipbelow=2pt,
-	nobreak
 },
 headfont=\normalfont\bfseries\color{darkpurple}
 ]{purplebox}
@@ -156,7 +157,6 @@ mdframed={
 	innerleftmargin=8pt,
 	leftmargin=-2pt,
 	skipbelow=2pt,
-	nobreak
 },
 headfont=\normalfont\bfseries\color{darkgreen}
 ]{greenbox}
@@ -175,7 +175,6 @@ mdframed={
 	innerleftmargin=8pt,
 	leftmargin=-2pt,
 	skipbelow=2pt,
-	nobreak
 },
 headfont=\normalfont\bfseries\color{darkyellow}
 ]{yellowbox}
@@ -194,7 +193,6 @@ mdframed={
 	innerleftmargin=8pt,
 	leftmargin=-2pt,
 	skipbelow=2pt,
-	nobreak
 },
 headfont=\normalfont\bfseries\color{darkblue}
 ]{bluebox}
@@ -213,7 +211,6 @@ mdframed={
 	innerleftmargin=8pt,
 	leftmargin=-2pt,
 	skipbelow=2pt,
-	nobreak
 },
 headfont=\normalfont\bfseries\color{darkred}
 ]{redbox}
@@ -353,12 +350,60 @@ headfont=\normalfont\bfseries\color{darkred}
 % MISC %
 \newtcolorbox{miscbox}[1]{
 	enhanced,
+	breakable,
 	title=\textbf{#1},
 	frame style={left color=blue!50!black, 
 		right color=green!85!black
 	},
 	drop fuzzy shadow
 }
+
+% BLOCK QUOTE %
+% Source: https://tex.stackexchange.com/a/16986/314257
+\makeatletter
+
+\tikzset{%
+	fancy quotes/.style={
+		text width=\fq@width pt,
+		align=justify,
+		inner sep=1em,
+		anchor=north west,
+		minimum width=\linewidth,
+	},
+	fancy quotes width/.initial={.8\linewidth},
+	fancy quotes marks/.style={
+		scale=8,
+		text=white,
+		inner sep=0pt,
+	},
+	fancy quotes opening/.style={
+		fancy quotes marks,
+	},
+	fancy quotes closing/.style={
+		fancy quotes marks,
+	},
+	fancy quotes background/.style={
+		show background rectangle,
+		inner frame xsep=0pt,
+		background rectangle/.style={
+			fill=gray!25,
+			rounded corners,
+		},
+	}
+}
+
+\newenvironment{fancyquotes}[1][]{%
+	\noindent
+	\tikzpicture[fancy quotes background]
+	\node[fancy quotes opening,anchor=north west] (fq@ul) at (0,0) {``};
+	\tikz@scan@one@point\pgfutil@firstofone(fq@ul.east)
+	\pgfmathsetmacro{\fq@width}{\linewidth - 2*\pgf@x}
+	\node[fancy quotes,#1] (fq@txt) at (fq@ul.north west) \bgroup}
+{\egroup;
+	\node[overlay,fancy quotes closing,anchor=east] at (fq@txt.south east) {''};
+	\endtikzpicture}
+
+\makeatother
 
 % SOLUTION %
 \newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
